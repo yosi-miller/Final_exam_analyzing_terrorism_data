@@ -27,4 +27,3 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 # TODO: run on docker
-# TODO: add readme

@@ -11,5 +11,5 @@ def get_db():
     print(url, port)
 
     client = MongoClient(url, int(port))
-    db = client['Final exam - analyzing terrorism data']
+    db = client['Final_exam-analyzing_terrorism_data']
     return client, db

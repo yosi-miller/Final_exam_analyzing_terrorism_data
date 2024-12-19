@@ -1,11 +1,11 @@
 import csv
 from pymongo import errors
 from database.connect import get_db
-# from database.model import crash_document, injuries_info
+from database.models import create_terrier_attack_row
 from services.logger_server import log_error, log_info
 
 
-def read_csv(path='../data/terroris_db_1000_rows.csv'):
+def read_csv(path='C:\\Users\y0504\Desktop\Final exam - analyzing terrorism data\data\\terroris_db_1000_rows.csv'):
     with open(path, 'r') as file:
         reader = csv.DictReader(file)
         for row in reader:
@@ -19,22 +19,29 @@ def init_crash_information_from_csv():
 
     client, db = get_db()
 
-    crash_collection = db['terrorism data']
+    collection = db['terrorism_data']
 
-    if crash_collection.count_documents({}) == 0:
+    if collection.count_documents({}) == 0:
         try:
             log_info(f'action: started insert crashs information to db')
 
-            for row in read_csv('data/Traffic_Crashes_-_Crashes - 20k rows.csv'):
-                injuries = injuries_info(row)
+            chunk = []
+            for row in read_csv():
+                terrier_attack_document = create_terrier_attack_row(row)
+                chunk.append(terrier_attack_document)
 
-                document = crash_document(row, injuries)
+                if len(chunk) == 100:
+                    collection.insert_many(chunk)
+                    log_info('insert 100 documents with chunk')
+                    print('insert 100 documents with chunk')
+                    chunk = []
 
-                crash_collection.insert_one(document)
+            if chunk:
+                collection.insert_many(chunk)
 
             log_info('action: completed insert crashs information to db')
 
-            create_index(crash_collection)
+            create_index(collection)
             return True, 'action: completed insert crashs information to db'
         except errors.PyMongoError as e:
             log_error(f'action: try insert crashs information, error: {e}')
@@ -44,10 +51,19 @@ def init_crash_information_from_csv():
             client.close()
     return True, 'the db is already exsit'
 
-# TODO: Implement this function
-def create_index(crash_collection):
-    # create a new index for the imported columns
-    pass
+def create_index(collection):
+    """
+    Create indexes for the imported columns to improve query performance.
+    """
+    collection.create_index([('date', 1)])
+    collection.create_index([('location.country', 1)])
+    collection.create_index([('location.region', 1)])
+    collection.create_index([('location.city', 1)])
+    collection.create_index([('attack.attack_code', 1)])
+    collection.create_index([('target.target_code', 1)])
+    collection.create_index([('group_name', 1)])
+    collection.create_index([('kill', 1)])
+    collection.create_index([('injured', 1)])
 
 
 if __name__ == '__main__':
