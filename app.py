@@ -1,11 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask
 import logging
-
-from repository.csv_repository import init_information_from_main_csv
 from routes.data_route import data_bp
 
 
-# הגדרת פורמט הלוג כך שיכלול את הזמן, שם הקובץ ומספר השורה
+# Setting the log format to include the time, file name and line number
 logging.basicConfig(
     filename='project_logs.log',
     level=logging.INFO,

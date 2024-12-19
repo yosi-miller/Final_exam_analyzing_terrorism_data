@@ -1,6 +1,6 @@
 from flask import Blueprint
 from repository.csv_repository import init_crash_information_from_csv
-from services.logger import log_info, log_error
+from services.logger_server import log_info, log_error
 
 data_bp = Blueprint('data_bp', __name__)
 

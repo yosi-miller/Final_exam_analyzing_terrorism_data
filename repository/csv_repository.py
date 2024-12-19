@@ -1,8 +1,8 @@
 import csv
 from pymongo import errors
-# from database.connect import get_db
+from database.connect import get_db
 # from database.model import crash_document, injuries_info
-from services.logger import log_error, log_info
+from services.logger_server import log_error, log_info
 
 
 def read_csv(path):
@@ -14,12 +14,12 @@ def read_csv(path):
 
 def init_crash_information_from_csv():
     """
-    Initializes crash information from CSV file to MongoDB collection.
+    Initializes terrorism data from CSV file to MongoDB collection.
     """
 
     client, db = get_db()
 
-    crash_collection = db['crash information']
+    crash_collection = db['terrorism data']
 
     if crash_collection.count_documents({}) == 0:
         try:
