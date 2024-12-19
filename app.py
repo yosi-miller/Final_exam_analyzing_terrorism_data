@@ -1,6 +1,7 @@
 from flask import Flask
 import logging
 from routes.data_route import data_bp
+from dotenv import load_dotenv
 
 
 # Setting the log format to include the time, file name and line number
