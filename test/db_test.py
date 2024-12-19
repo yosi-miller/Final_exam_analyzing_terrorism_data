@@ -3,7 +3,7 @@
 from conftest import test_db_collection, populate_crash_db
 
 
-def test_insert_crash(test_db_collection, populate_crash_db):
+def test_insert_terrier_attacks(test_db_collection, populate_crash_db):
     assert test_db_collection.count_documents({}) > 1
     assert test_db_collection.count_documents({}) == 20
 

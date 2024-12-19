@@ -1,8 +1,10 @@
-from datetime import date
+from datetime import datetime
 
 def create_terrier_attack_row(row):
     result = {
-        'date': date(int(row['iyear']), int(row['imonth']), int(row['iday'])),
+        'date': datetime(int(row['iyear']),
+                     int(row['imonth']) if int(row['imonth']) >= 1 else 1,
+                     int(row['iday']) if int(row['iday']) >= 1 else 1),
         'location': {'country': row['country_txt'],
                      'region': row['region_txt'],
                      'city': row['city'],
@@ -17,5 +19,6 @@ def create_terrier_attack_row(row):
         'group_name': row['gname'],
         'kill': row['nkill'],
         'injured': row['nwound'],
-
     }
+
+    return result

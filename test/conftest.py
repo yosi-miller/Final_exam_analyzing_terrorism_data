@@ -1,6 +1,7 @@
 import pymongo
 import pytest
 
+from database.models import create_terrier_attack_row
 from repository.csv_repository import read_csv
 
 
@@ -24,14 +25,11 @@ def test_db_collection(init_db):
 @pytest.fixture
 def populate_crash_db(test_db_collection):
     documents = []
-    csv_reader = read_csv('../data/terroris_db_1000_rows.csv')
+    csv_reader = read_csv()
 
     for i, row in enumerate(csv_reader):
         if i >= 20:
             break
-        documents.append({'iyear': row['iyear']})
-    # for row in read_csv('C:\\Users\y0504\Desktop\Week 5(10-10)\data\‏test_data.csv'):
-    #     injuries = injuries_info(row)
-    #     document = crash_document(row, injuries)
+        documents.append(create_terrier_attack_row(row))
     test_db_collection.insert_many(documents)
 
