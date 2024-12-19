@@ -3,6 +3,7 @@ import logging
 from routes.data_route import data_bp
 from dotenv import load_dotenv
 
+load_dotenv()
 
 # Setting the log format to include the time, file name and line number
 logging.basicConfig(

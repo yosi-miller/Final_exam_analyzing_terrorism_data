@@ -5,7 +5,7 @@ from database.connect import get_db
 from services.logger_server import log_error, log_info
 
 
-def read_csv(path):
+def read_csv(path='../data/terroris_db_1000_rows.csv'):
     with open(path, 'r') as file:
         reader = csv.DictReader(file)
         for row in reader:
@@ -32,16 +32,17 @@ def init_crash_information_from_csv():
 
                 crash_collection.insert_one(document)
 
-            log_info(f'action: completed insert crashs information to db')
+            log_info('action: completed insert crashs information to db')
 
             create_index(crash_collection)
-
+            return True, 'action: completed insert crashs information to db'
         except errors.PyMongoError as e:
             log_error(f'action: try insert crashs information, error: {e}')
             print(f'Error: {e}')
-            return e
+            return False, e
         finally:
             client.close()
+    return True, 'the db is already exsit'
 
 # TODO: Implement this function
 def create_index(crash_collection):
@@ -50,6 +51,7 @@ def create_index(crash_collection):
 
 
 if __name__ == '__main__':
-    csv_path = 'C:\\Users\y0504\Desktop\Week 5(10-10)\data\Traffic_Crashes_-_Crashes - 20k rows.csv'
+    csv_path = '../data/terroris_db_1000_rows.csv'
     csv_reader = read_csv(csv_path)
     first_row = next(csv_reader)
+    print(first_row)
