@@ -34,6 +34,13 @@ def group_and_region_data():
     columns = ['group_name', 'location.region', 'location.latitude', 'location.longitude']
     return df[columns]
 
+def hitting_and_hits():
+    df = get_information_attack_data()
+    columns = ['amount_terorist', 'kill']
+    return df[columns]
+
+def group_and_type_attack():
+
 
 if __name__ == '__main__':
     print(victims_and_region_data())

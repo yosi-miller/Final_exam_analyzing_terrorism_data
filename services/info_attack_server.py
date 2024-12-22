@@ -1,6 +1,6 @@
 import pandas as pd
 from repository.info_attack_repository import deadly_attack_data, victims_and_region_data, get_information_attack_data, \
-    group_and_region_data
+    group_and_region_data, hitting_and_hits
 
 
 # Q-1
@@ -78,6 +78,10 @@ def calculate_most_active_groups_by_region(region=None):
 
     return result[['location.region', 'location.latitude', 'location.longitude', 'group_name', 'attack_count']].to_dict(orient='records')
 
+# Q-9 . קורלציה בין מספר הפוגעים למספר הנפגעים.
+def calculate_correlation_between_hitting_and_hits():
+    dataframe = hitting_and_hits()
+    return dataframe['kill'].corr(dataframe['amount_terorist'])
 
 if __name__ == '__main__':
-    print(calculate_most_active_groups_by_region('North America'))
+    print(calculate_correlation_between_hitting_and_hits())
