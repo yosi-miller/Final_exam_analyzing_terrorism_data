@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import logging
 from routes.data_route import data_bp
 from dotenv import load_dotenv
@@ -15,11 +15,10 @@ app = Flask(__name__)
 
 app.register_blueprint(data_bp)
 
-@app.route('/home')
+@app.route('/')
 def home():
-    # return render_template(
-    #     'index.html')
-    return "Hello World!"
+    return render_template('index.html')
+
 
 
 if __name__ == '__main__':
