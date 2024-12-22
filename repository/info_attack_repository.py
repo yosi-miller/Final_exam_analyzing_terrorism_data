@@ -15,11 +15,15 @@ def get_information_attack_data():
     df = pd.json_normalize(data)
     return df
 
-def information_deadly_attack():
+def deadly_attack_data():
     df = get_information_attack_data()
     columns = ['kill', 'injured', 'attack.attack_code', 'attack.attack_type']
     return df[columns]
 
+def victims_and_region_data():
+    df = get_information_attack_data()
+    columns = ['kill', 'injured', 'location.region', 'location.latitude', 'location.longitude']
+    return df[columns]
 
 if __name__ == '__main__':
-    information_deadly_attack()
+    print(victims_and_region_data())
