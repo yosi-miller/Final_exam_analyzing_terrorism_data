@@ -1,5 +1,6 @@
 import pandas as pd
-from repository.info_attack_repository import deadly_attack_data, victims_and_region_data, get_information_attack_data
+from repository.info_attack_repository import deadly_attack_data, victims_and_region_data, get_information_attack_data, \
+    group_and_region_data
 
 
 # Q-1
@@ -58,6 +59,25 @@ def calculate_percentage_change_attacks_by_region(top_n=None):
     # החזרת התוצאה בפורמט JSON
     return result.to_dict(orient='records')
 
+# Q-8
+def calculate_most_active_groups_by_region(region=None):
+    dataframe = group_and_region_data()
+
+    result = dataframe.groupby(['location.region', 'group_name']).size().reset_index(name='attack_count')
+    result = result.sort_values(by='attack_count', ascending=False)
+
+    avg_location = dataframe.groupby('location.region').agg({
+        'location.latitude': 'mean',
+        'location.longitude': 'mean'
+    }).reset_index()
+
+    result = result.merge(avg_location, on='location.region', how='left')
+
+    if region:
+        result = result[result['location.region'] == region]
+
+    return result[['location.region', 'location.latitude', 'location.longitude', 'group_name', 'attack_count']].to_dict(orient='records')
+
 
 if __name__ == '__main__':
-    print(calculate_percentage_change_attacks_by_region())
+    print(calculate_most_active_groups_by_region('North America'))

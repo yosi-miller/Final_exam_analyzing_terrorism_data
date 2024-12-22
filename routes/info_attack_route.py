@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from services.logger_server import log_error, log_info
 from services.info_attack_server import calculate_top_attacks, calculate_average_casualties_by_area, \
-    calculate_percentage_change_attacks_by_region
+    calculate_percentage_change_attacks_by_region, calculate_most_active_groups_by_region
 
 terrorise_attack_info_bp = Blueprint('terroristic_attack_info_bp', __name__)
 
@@ -39,4 +39,16 @@ def get_percentage_change_attacks_by_region():
 
     except Exception as e:
         log_error(f"Error fetching percentage change in attacks by region: {str(e)}")
+        return jsonify({"error": "An error occurred"}), 500
+
+@terrorise_attack_info_bp.route('/most_active_groups_by_region', methods=['GET'])
+def get_most_active_groups_by_region():
+    try:
+        region = request.args.get('region', default=None, type=str)
+        result = calculate_most_active_groups_by_region(region)
+        log_info(f"Most active groups by region fetched successfully")
+        return jsonify(result), 200
+
+    except Exception as e:
+        log_error(f"Error fetching most active groups by region: {str(e)}")
         return jsonify({"error": "An error occurred"}), 500

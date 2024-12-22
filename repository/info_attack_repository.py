@@ -2,7 +2,6 @@ import pandas as pd
 from database.connect import get_db
 
 
-
 def get_information_attack_data():
     """
     This function retrieves data from the 'terrorism_data' collection,
@@ -28,6 +27,11 @@ def victims_and_region_data():
 def years_region_and_attack_data():
     df = get_information_attack_data()
     columns = ['date', 'location.region', 'location.latitude', 'location.longitude']
+    return df[columns]
+
+def group_and_region_data():
+    df = get_information_attack_data()
+    columns = ['group_name', 'location.region', 'location.latitude', 'location.longitude']
     return df[columns]
 
 
