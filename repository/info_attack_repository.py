@@ -25,5 +25,11 @@ def victims_and_region_data():
     columns = ['kill', 'injured', 'location.region', 'location.latitude', 'location.longitude']
     return df[columns]
 
+def years_region_and_attack_data():
+    df = get_information_attack_data()
+    columns = ['date', 'location.region', 'location.latitude', 'location.longitude']
+    return df[columns]
+
+
 if __name__ == '__main__':
     print(victims_and_region_data())

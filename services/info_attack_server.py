@@ -1,6 +1,8 @@
-from repository.info_attack_repository import deadly_attack_data, victims_and_region_data
+import pandas as pd
+from repository.info_attack_repository import deadly_attack_data, victims_and_region_data, get_information_attack_data
 
 
+# Q-1
 def calculate_top_attacks(top_n=None):
     dataframe = deadly_attack_data()
     dataframe['impact'] = (dataframe['kill'] * 2) + dataframe['injured']
@@ -14,6 +16,7 @@ def calculate_top_attacks(top_n=None):
 
     return result.to_dict(orient='records')
 
+# Q-2
 def calculate_average_casualties_by_area(top_n=None):
     dataframe = victims_and_region_data()
     dataframe['impact'] = (dataframe['kill'] * 2) + dataframe['injured']
@@ -26,5 +29,35 @@ def calculate_average_casualties_by_area(top_n=None):
         result = result.head(top_n)
 
     return result.to_dict(orient='records')
+
+# Q-6
+def calculate_percentage_change_attacks_by_region(top_n=None):
+    dataframe = get_information_attack_data()
+    dataframe['year'] = pd.to_datetime(dataframe['date']).dt.year
+
+    # ספירת פיגועים לכל שנה לפי אזור
+    yearly_counts = dataframe.groupby(['location.region', 'year']).size().reset_index(name='attack_count')
+    # חישוב שינוי האחוזים בין כל השנים
+    yearly_counts['percent_change'] = yearly_counts.groupby('location.region')['attack_count'].pct_change() * 100
+
+    # חישוב סך שינוי האחוזים עבור כל אזור (התעלמות מ-NaN)
+    total_changes = yearly_counts.groupby('location.region')['percent_change'].sum().reset_index()
+
+    # חישוב מיקום ממוצע לכל אזור
+    avg_location = dataframe.groupby('location.region').agg({
+        'location.latitude': 'mean',
+        'location.longitude': 'mean'
+    }).reset_index()
+
+    result = total_changes.merge(avg_location, on='location.region', how='left')
+    result = result.sort_values(by='percent_change', ascending=False)
+
+    if top_n:
+        result = result.head(top_n)
+
+    # החזרת התוצאה בפורמט JSON
+    return result.to_dict(orient='records')
+
+
 if __name__ == '__main__':
-    print(calculate_average_casualties_by_area(5))
+    print(calculate_percentage_change_attacks_by_region())
