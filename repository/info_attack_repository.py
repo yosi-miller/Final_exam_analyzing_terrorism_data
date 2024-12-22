@@ -40,7 +40,10 @@ def hitting_and_hits():
     return df[columns]
 
 def group_and_type_attack():
+    df = get_information_attack_data()
+    columns = ['group_name', 'attack.attack_type']
+    return df[columns]
 
 
 if __name__ == '__main__':
-    print(victims_and_region_data())
+    print(group_and_type_attack())

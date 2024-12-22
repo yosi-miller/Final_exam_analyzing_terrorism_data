@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from services.logger_server import log_error, log_info
 from services.info_attack_server import calculate_top_attacks, calculate_average_casualties_by_area, \
     calculate_percentage_change_attacks_by_region, calculate_most_active_groups_by_region, \
-    calculate_correlation_between_hitting_and_hits
+    calculate_correlation_between_hitting_and_hits, calculate_groups_involved_in_same_attacks
 
 terrorise_attack_info_bp = Blueprint('terroristic_attack_info_bp', __name__)
 
@@ -63,4 +63,15 @@ def get_correlation_between_hitting_and_hits():
 
     except Exception as e:
         log_error(f"Error calculating correlation between hitting and hits: {str(e)}")
+        return jsonify({"error": "An error occurred"}), 500
+
+@terrorise_attack_info_bp.route('/groups_involved_in_same_attacks', methods=['GET'])
+def get_groups_involved_in_same_attacks():
+    try:
+        result = calculate_groups_involved_in_same_attacks()
+        log_info(f"Groups involved in same attacks fetched successfully")
+        return jsonify(result), 200
+
+    except Exception as e:
+        log_error(f"Error fetching groups involved in same attacks: {str(e)}")
         return jsonify({"error": "An error occurred"}), 500

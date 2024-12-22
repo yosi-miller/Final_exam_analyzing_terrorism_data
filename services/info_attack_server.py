@@ -1,6 +1,6 @@
 import pandas as pd
 from repository.info_attack_repository import deadly_attack_data, victims_and_region_data, get_information_attack_data, \
-    group_and_region_data, hitting_and_hits
+    group_and_region_data, hitting_and_hits, group_and_type_attack
 
 
 # Q-1
@@ -83,5 +83,16 @@ def calculate_correlation_between_hitting_and_hits():
     dataframe = hitting_and_hits()
     return dataframe['kill'].corr(dataframe['amount_terorist'])
 
+# Q-13 איתור קבוצות שהשתתפו באותן תקיפות.
+def calculate_groups_involved_in_same_attacks():
+    dataframe = group_and_type_attack()
+
+    result = dataframe.groupby('attack.attack_type')['group_name'].unique().reset_index()
+
+    result['group_name'] = result['group_name'].apply(lambda x: list(x))
+
+    return result.to_dict(orient='records')
+
+
 if __name__ == '__main__':
-    print(calculate_correlation_between_hitting_and_hits())
+    print(calculate_groups_involved_in_same_attacks())
