@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Setting the log format to include the time, file name and line number
 logging.basicConfig(
     filename='project_logs.log',
     level=logging.INFO,

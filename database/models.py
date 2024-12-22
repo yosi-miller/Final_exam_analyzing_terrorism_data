@@ -8,17 +8,18 @@ def create_terrier_attack_row(row):
         'location': {'country': row['country_txt'],
                      'region': row['region_txt'],
                      'city': row['city'],
-                     'latitude': row['latitude'],
-                     'longitude': row['longitude']},
+                     'latitude': float(row['latitude']) if row['longitude'] != '' else None,
+                     'longitude': float(row['longitude']) if row['longitude'] != '' else None},
         'summary': row['summary'],
-        'success': row['success'],
-        'attack': {'attack_code': row['attacktype1'],
+        'success': int(row['success']),
+        'attack': {'attack_code': int(row['attacktype1']),
                     'attack_type': row['attacktype1_txt']},
-        'target': {'target_code': row['targtype1'],
+        'target': {'target_code': int(row['targtype1']),
                    'target_type': row['targtype1_txt']},
         'group_name': row['gname'],
-        'kill': row['nkill'],
-        'injured': row['nwound'],
+        'amount_terorist': int(row['nperps']) if row['nperps'] >= '1' else 1,
+        'kill': int(row['nkill']) if row['nkill'] >= '1' else 0,
+        'injured': int(row['nwound']) if row['nwound'] >= '1' else 0
     }
 
     return result
