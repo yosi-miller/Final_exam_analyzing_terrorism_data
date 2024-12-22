@@ -7,18 +7,27 @@
     <script src="../static/main.js" defer></script>
 </head>
 <body>
-<header></header>
+<header>
+    <h2>
+        welcome to the home page
+        here find information about the terrorist attack
+    </h2>
+</header>
+
 <main>
-    <div>
-        <h2>
-            welcome to the home page
-            here find information about the terrorist attack
-        </h2>
+    <div class="main_container">
 
         <div class="insert_button">
             <p>To insert terrorist attacks click here</p>
             <button id="insertButton">Insert Data Base</button>
             <div id="responseContainer"></div>
+        </div>
+
+        <div class="attack_info">
+            <p>Show all attacks</p>
+            <a class="btn" href="http://localhost:5000/terroristic_attack_info/top-attacks">show attack</a>
+            <p>Show top 5 to attacks</p>
+            <a class="btn" href="http://localhost:5000/terroristic_attack_info/top-attacks?top_n=5">show top 5 attack</a>
         </div>
     </div>
 </main>

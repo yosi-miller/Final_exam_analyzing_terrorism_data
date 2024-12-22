@@ -1,11 +1,22 @@
+.main_container{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /*height: 100vh;*/
+}
 .btn {
-  text-decoration: none;
   padding: 0.5rem;
   border: 1px solid #333333;
+
 }
 
 .insert_button {
   text-decoration: none;
   padding: 0.5rem;
+  border: 1px solid #333333;
+}
+
+.attack_info {
+  padding: 5mm;
   border: 1px solid #333333;
 }
