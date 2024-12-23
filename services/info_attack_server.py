@@ -1,6 +1,6 @@
 import pandas as pd
 from repository.info_attack_repository import deadly_attack_data, victims_and_region_data, get_information_attack_data, \
-    group_and_region_data, hitting_and_hits, group_and_type_attack
+    group_and_region_data, hitting_and_hits, group_and_type_attack, group_and_type_target
 
 
 # Q-1
@@ -93,6 +93,16 @@ def calculate_groups_involved_in_same_attacks():
 
     return result.to_dict(orient='records')
 
+# Q-15 . איתור קבוצות עם העדפות דומות למטרות
+def calculate_groups_involved_in_same_targets():
+    dataframe = group_and_type_target()
+
+    result = dataframe.groupby('target.target_type')['group_name'].unique().reset_index()
+
+    result['group_name'] = result['group_name'].apply(lambda x: list(x))
+
+    return result.to_dict(orient='records')
+
 
 if __name__ == '__main__':
-    print(calculate_groups_involved_in_same_attacks())
+    print(calculate_groups_involved_in_same_targets())

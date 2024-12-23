@@ -44,6 +44,11 @@ def group_and_type_attack():
     columns = ['group_name', 'attack.attack_type']
     return df[columns]
 
+def group_and_type_target():
+    df = get_information_attack_data()
+    columns = ['group_name', 'target.target_type']
+    return df[columns]
+
 
 if __name__ == '__main__':
-    print(group_and_type_attack())
+    print(group_and_type_target())
