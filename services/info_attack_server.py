@@ -1,6 +1,7 @@
 import pandas as pd
 from repository.info_attack_repository import deadly_attack_data, victims_and_region_data, get_information_attack_data, \
-    group_and_region_data, hitting_and_hits_data, group_and_type_attack_data, group_and_type_target_data
+    group_and_region_data, hitting_and_hits_data, group_and_type_attack_data, group_and_type_target_data, \
+    group_target_and_region_data
 
 
 # Q-1
@@ -107,21 +108,25 @@ def calculate_groups_most_involved_in_same_targets():
 
     return result.to_dict(orient='records')
 
-# Q-11 . זיהוי קבוצות עם מטרות משותפות באותו אזור. שאלה מנחה: אילו קבוצות טרור תקפו את אותם
-# מטרות באזור מסוים? אפשרות סינון איזור: region או country
-# def calculate_groups_involved_in_same_targets(region=None):
-#     dataframe = group_and_type_target_data()
-#
-#     result = dataframe.groupby(['location.region', 'target.target_type'])['group_name'].unique().reset_index()
-#
-#     result['group_name'] = result['group_name'].apply(lambda x: list(x))
-#
-#     if region:
-#         result = result[result['location.region'] == region]
-#
-#     return result.to_dict(orient='records')
+# Q-11 . זיהוי קבוצות עם מטרות משותפות באותו אזור.
+def calculate_groups_involved_in_same_targets(region=None):
+    dataframe = group_target_and_region_data()
 
+    area_screen = 'location.region' if region else 'location.country'
+    print(area_screen)
+    result = dataframe.groupby([area_screen, 'target.target_type'])['group_name'].unique().reset_index()
+
+    avg_location = dataframe.groupby(area_screen).agg({
+        'location.latitude': 'mean',
+        'location.longitude': 'mean'
+    }).reset_index()
+
+    result = result.merge(avg_location, on=area_screen, how='left')
+
+    result['group_name'] = result['group_name'].apply(lambda x: list(x))
+
+    return result.to_dict(orient='records')
 
 
 if __name__ == '__main__':
-    print(calculate_groups_most_involved_in_same_targets())
+    print(calculate_groups_involved_in_same_targets('ddd'))
