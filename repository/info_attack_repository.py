@@ -59,6 +59,11 @@ def group_attack_and_region_data():
     columns = ['group_name', 'attack.attack_type', 'location.country', 'location.region', 'location.latitude', 'location.longitude']
     return df[columns]
 
+def unique_groups_by_area_data():
+    df = get_information_attack_data()
+    columns = ['group_name', 'location.country', 'location.region', 'location.latitude', 'location.longitude']
+    return df[columns]
+
 
 if __name__ == '__main__':
     print(group_and_type_target_data())
