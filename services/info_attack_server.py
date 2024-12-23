@@ -109,11 +109,11 @@ def calculate_groups_most_involved_in_same_targets():
     return result.to_dict(orient='records')
 
 # Q-11 . זיהוי קבוצות עם מטרות משותפות באותו אזור.
-def calculate_groups_involved_in_same_targets(region=None):
+def calculate_groups_involved_in_same_targets(region=None, area=None):
     dataframe = group_target_and_region_data()
 
     area_screen = 'location.region' if region else 'location.country'
-    print(area_screen)
+
     result = dataframe.groupby([area_screen, 'target.target_type'])['group_name'].unique().reset_index()
 
     avg_location = dataframe.groupby(area_screen).agg({
@@ -123,10 +123,13 @@ def calculate_groups_involved_in_same_targets(region=None):
 
     result = result.merge(avg_location, on=area_screen, how='left')
 
+    if area:
+        result = result[result[area_screen] == area]
+
     result['group_name'] = result['group_name'].apply(lambda x: list(x))
 
     return result.to_dict(orient='records')
 
 
 if __name__ == '__main__':
-    print(calculate_groups_involved_in_same_targets('ddd'))
+    print(calculate_groups_involved_in_same_targets(region='c', area='Western Europe'))
