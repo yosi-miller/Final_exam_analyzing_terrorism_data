@@ -1,6 +1,6 @@
 import pandas as pd
 from repository.info_attack_repository import deadly_attack_data, victims_and_region_data, get_information_attack_data, \
-    group_and_region_data, hitting_and_hits, group_and_type_attack, group_and_type_target
+    group_and_region_data, hitting_and_hits_data, group_and_type_attack_data, group_and_type_target_data
 
 
 # Q-1
@@ -80,12 +80,12 @@ def calculate_most_active_groups_by_region(region=None):
 
 # Q-9 . קורלציה בין מספר הפוגעים למספר הנפגעים.
 def calculate_correlation_between_hitting_and_hits():
-    dataframe = hitting_and_hits()
+    dataframe = hitting_and_hits_data()
     return dataframe['kill'].corr(dataframe['amount_terorist'])
 
 # Q-13 איתור קבוצות שהשתתפו באותן תקיפות.
 def calculate_groups_involved_in_same_attacks():
-    dataframe = group_and_type_attack()
+    dataframe = group_and_type_attack_data()
 
     result = dataframe.groupby('attack.attack_type')['group_name'].unique().reset_index()
 
@@ -95,7 +95,7 @@ def calculate_groups_involved_in_same_attacks():
 
 # Q-15 . איתור קבוצות עם העדפות דומות למטרות
 def calculate_groups_involved_in_same_targets():
-    dataframe = group_and_type_target()
+    dataframe = group_and_type_target_data()
 
     result = dataframe.groupby('target.target_type')['group_name'].unique().reset_index()
 

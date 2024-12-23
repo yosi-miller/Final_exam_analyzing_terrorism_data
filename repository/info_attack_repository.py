@@ -34,21 +34,26 @@ def group_and_region_data():
     columns = ['group_name', 'location.region', 'location.latitude', 'location.longitude']
     return df[columns]
 
-def hitting_and_hits():
+def hitting_and_hits_data():
     df = get_information_attack_data()
     columns = ['amount_terorist', 'kill']
     return df[columns]
 
-def group_and_type_attack():
+def group_and_type_attack_data():
     df = get_information_attack_data()
     columns = ['group_name', 'attack.attack_type']
     return df[columns]
 
-def group_and_type_target():
+def group_and_type_target_data():
     df = get_information_attack_data()
     columns = ['group_name', 'target.target_type']
     return df[columns]
 
+def group_target_and_region_data():
+    df = get_information_attack_data()
+    columns = ['group_name', 'target.target_type', 'location.region', 'location.latitude', 'location.longitude']
+    return df[columns]
+
 
 if __name__ == '__main__':
-    print(group_and_type_target())
+    print(group_and_type_target_data())
