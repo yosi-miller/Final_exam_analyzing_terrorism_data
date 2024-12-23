@@ -1,7 +1,7 @@
 import pandas as pd
 from repository.info_attack_repository import deadly_attack_data, victims_and_region_data, get_information_attack_data, \
     group_and_region_data, hitting_and_hits_data, group_and_type_attack_data, group_and_type_target_data, \
-    group_target_and_region_data
+    group_target_and_region_data, group_attack_and_region_data
 
 
 # Q-1
@@ -130,6 +130,28 @@ def calculate_groups_involved_in_same_targets(region=None, area=None):
 
     return result.to_dict(orient='records')
 
+# Q-14 זיהוי אזורים עם אסטרטגיות תקיפה משותפות בין קבוצות
+def calculate_groups_involved_in_same_attack(region=None, area=None):
+    dataframe = group_attack_and_region_data()
+
+    area_screen = 'location.region' if region else 'location.country'
+
+    result = dataframe.groupby([area_screen, 'attack.attack_type'])['group_name'].unique().reset_index()
+
+    avg_location = dataframe.groupby(area_screen).agg({
+        'location.latitude': 'mean',
+        'location.longitude': 'mean'
+    }).reset_index()
+
+    result = result.merge(avg_location, on=area_screen, how='left')
+
+    if area:
+        result = result[result[area_screen] == area]
+
+    result['group_name'] = result['group_name'].apply(lambda x: list(x))
+
+    return result.to_dict(orient='records')
+
 
 if __name__ == '__main__':
-    print(calculate_groups_involved_in_same_targets(region='c', area='Western Europe'))
+    print(calculate_groups_involved_in_same_attack(region='c', area='Western Europe'))
