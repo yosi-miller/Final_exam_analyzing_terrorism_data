@@ -94,7 +94,7 @@ def calculate_groups_involved_in_same_attacks():
     return result.to_dict(orient='records')
 
 # Q-15 . איתור קבוצות עם העדפות דומות למטרות
-def calculate_groups_involved_in_same_targets():
+def calculate_groups_most_involved_in_same_targets():
     dataframe = group_and_type_target_data()
 
     group_counts = dataframe.groupby(['target.target_type', 'group_name'])[['group_name']].size().reset_index(name='count')
@@ -124,4 +124,4 @@ def calculate_groups_involved_in_same_targets():
 
 
 if __name__ == '__main__':
-    print(calculate_groups_involved_in_same_targets())
+    print(calculate_groups_most_involved_in_same_targets())
