@@ -97,11 +97,30 @@ def calculate_groups_involved_in_same_attacks():
 def calculate_groups_involved_in_same_targets():
     dataframe = group_and_type_target_data()
 
-    result = dataframe.groupby('target.target_type')['group_name'].unique().reset_index()
+    group_counts = dataframe.groupby(['target.target_type', 'group_name'])[['group_name']].size().reset_index(name='count')
+
+    most_popular_groups_attack  = group_counts[group_counts['count'] >= 2]
+
+    result = most_popular_groups_attack.groupby('target.target_type')['group_name'].unique().reset_index()
 
     result['group_name'] = result['group_name'].apply(lambda x: list(x))
 
     return result.to_dict(orient='records')
+
+# Q-11 . זיהוי קבוצות עם מטרות משותפות באותו אזור. שאלה מנחה: אילו קבוצות טרור תקפו את אותם
+# מטרות באזור מסוים? אפשרות סינון איזור: region או country
+# def calculate_groups_involved_in_same_targets(region=None):
+#     dataframe = group_and_type_target_data()
+#
+#     result = dataframe.groupby(['location.region', 'target.target_type'])['group_name'].unique().reset_index()
+#
+#     result['group_name'] = result['group_name'].apply(lambda x: list(x))
+#
+#     if region:
+#         result = result[result['location.region'] == region]
+#
+#     return result.to_dict(orient='records')
+
 
 
 if __name__ == '__main__':

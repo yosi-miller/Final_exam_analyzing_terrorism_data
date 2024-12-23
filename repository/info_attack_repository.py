@@ -51,7 +51,7 @@ def group_and_type_target_data():
 
 def group_target_and_region_data():
     df = get_information_attack_data()
-    columns = ['group_name', 'target.target_type', 'location.region', 'location.latitude', 'location.longitude']
+    columns = ['group_name', 'target.target_type', 'location.country', 'location.region', 'location.latitude', 'location.longitude']
     return df[columns]
 
 
