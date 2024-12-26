@@ -1,7 +1,7 @@
 import csv
 from pymongo import errors
 from database.connect import get_db
-from database.models import create_terrier_attack_row
+from database.models import terrier_attack_model
 from services.logger_server import log_error, log_info
 
 
@@ -27,7 +27,7 @@ def init_crash_information_from_csv():
 
             chunk = []
             for row in read_csv():
-                terrier_attack_document = create_terrier_attack_row(row)
+                terrier_attack_document = terrier_attack_model(row)
                 chunk.append(terrier_attack_document)
 
                 if len(chunk) == 100:
@@ -67,7 +67,7 @@ def create_index(collection):
 
 
 if __name__ == '__main__':
-    csv_path = '../data/terroris_db_1000_rows.csv'
+    csv_path = 'C:\\Users\y0504\Desktop\Final exam - analyzing terrorism data\data\RAND_Database_of_Worldwide_Terrorism_Incidents - 5000 rows (1).csv'
     csv_reader = read_csv(csv_path)
     first_row = next(csv_reader)
     print(first_row)

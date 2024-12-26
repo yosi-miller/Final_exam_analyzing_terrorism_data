@@ -1,14 +1,14 @@
 import pandas as pd
 from database.connect import get_db
 
+client, db = get_db()
+collection = db['terrorism_data']
 
 def get_information_attack_data():
     """
     This function retrieves data from the 'terrorism_data' collection,
     normalizes it into a pandas DataFrame, and returns the DataFrame.
     """
-    client, db = get_db()
-    collection = db['terrorism_data']
 
     data = list(collection.find({}, {'_id': 0}))
     df = pd.json_normalize(data)
@@ -66,4 +66,4 @@ def unique_groups_by_area_data():
 
 
 if __name__ == '__main__':
-    print(group_and_type_target_data())
+    print(hitting_and_hits_data().groupby('kill')['amount_terorist'].apply(list).reset_index())

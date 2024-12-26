@@ -1,7 +1,7 @@
 import pymongo
 import pytest
 
-from database.models import create_terrier_attack_row
+from database.models import terrier_attack_model
 from repository.csv_repository import read_csv
 
 
@@ -30,6 +30,6 @@ def populate_crash_db(test_db_collection):
     for i, row in enumerate(csv_reader):
         if i >= 20:
             break
-        documents.append(create_terrier_attack_row(row))
+        documents.append(terrier_attack_model(row))
     test_db_collection.insert_many(documents)
 
